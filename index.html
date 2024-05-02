@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta charset="UTF-8">
+    <title>Password Strength Checker</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <!DOCTYPE html>
+    <html lang="en">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Password Strength Checker</title>
+        <style>
+        .valid {
+            color: green;
+        }
+
+        .invalid {
+            color: red;
+        }
+
+
+
+        </style>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
+    
+    <body>
+        <div class="container">
+            <h2>Password Strength Checker</h2>
+            <div class="inputArea">
+                <input type="password" placeholder="Password" id="YourPassword">
+                <span><i id="toggler" class="far fa-eye"></i></span>
+            </div>
+            <div class="strengthMeter"></div>
+            <p id="length" class="invalid"> <img src="C:\Users\lenovo\OneDrive\Bureau\TEMPLATE1\cross.png" alt="Image Description" style="vertical-align: middle; margin-right: 5px;">At least 12 characters long</p>
+            <p id="uppercase" class="invalid"><img src="C:\Users\lenovo\OneDrive\Bureau\TEMPLATE1\cross.png" alt="Image Description" style="vertical-align: middle; margin-right: 5px;">At least 1 uppercase letter (A-Z)</p>
+            <p id="lowercase" class="invalid"><img src="C:\Users\lenovo\OneDrive\Bureau\TEMPLATE1\cross.png" alt="Image Description" style="vertical-align: middle; margin-right: 5px;">At least 1 lowercase letter (a-z)</p>
+            <p id="number" class="invalid"><img src="C:\Users\lenovo\OneDrive\Bureau\TEMPLATE1\cross.png" alt="Image Description" style="vertical-align: middle; margin-right: 5px;">At least 1 number (0-9)</p>
+        </div>
+        
+    
+        <script>
+            function checkPasswordStrength() {
+                let password = document.getElementById("YourPassword").value;
+    
+                // Check length
+                if (password.length >= 12) {
+                    document.getElementById("length").classList.remove("invalid");
+                    document.getElementById("length").classList.add("valid");
+                } else {
+                    document.getElementById("length").classList.remove("valid");
+                    document.getElementById("length").classList.add("invalid");
+                }
+    
+                // Check uppercase
+                if (/[A-Z]/.test(password)) {
+                    document.getElementById("uppercase").classList.remove("invalid");
+                    document.getElementById("uppercase").classList.add("valid");
+                } else {
+                    document.getElementById("uppercase").classList.remove("valid");
+                    document.getElementById("uppercase").classList.add("invalid");
+                }
+    
+                // Check lowercase
+                if (/[a-z]/.test(password)) {
+                    document.getElementById("lowercase").classList.remove("invalid");
+                    document.getElementById("lowercase").classList.add("valid");
+                } else {
+                    document.getElementById("lowercase").classList.remove("valid");
+                    document.getElementById("lowercase").classList.add("invalid");
+                }
+    
+                // Check number
+                if (/\d/.test(password)) {
+                    document.getElementById("number").classList.remove("invalid");
+                    document.getElementById("number").classList.add("valid");
+                } else {
+                    document.getElementById("number").classList.remove("valid");
+                    document.getElementById("number").classList.add("invalid");
+                }
+            }
+    
+            document.getElementById("YourPassword").addEventListener("input", checkPasswordStrength);
+        </script>
+    </body>
+    
+    </html>
+    
+    <!-- partial -->
+    <div class="video-background">
+      <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+        <source src="file:///C:/Users/lenovo/OneDrive/Bureau/TEMPLATE1/videos/video.mp4" type="video/mp4">
+      </video>
+    </div>
+    <script src="./script.js"></script>
+</body>
+
