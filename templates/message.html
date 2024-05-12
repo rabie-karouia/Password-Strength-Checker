@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: black;
+            /* Set a fallback background color */
+        }
+
+        #video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Ensure the video covers the entire container */
+            z-index: -100;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            /* Center horizontally */
+            align-items: center;
+            /* Center vertically */
+            height: 100vh;
+            /* Make the body height equal to the viewport height */
+            background-color: #f0f0f0;
+            /* Optional background color */
+        }
+
+        .message-container {
+            position: relative;
+            width: 400px;
+            border-radius: 20px 20px 0 0;
+            padding: 30px;
+            background: rgba(74, 69, 69, 0.7);
+            /* This will make the background semi-transparent */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Center vertically */
+            flex-direction: column;
+            gap: 10px;
+            border-radius: 1px solid #111;
+            padding-bottom: 70px;
+            z-index: 1;
+            /* This will place the container in front of the video */
+        }
+    </style>
+
+</head>
+
+<body>
+    <video playsinline autoplay muted loop id="video-background">
+        <source src="{{ url_for('static', filename='videos/video.mp4') }}" type="video/mp4">
+    </video>
+
+    <div class="message-container">
+        <h2>CONGRATULATIONS!</h2>
+        <p>YOUR PASSWORD MEETS ALL REQUIREMENTS AND IS STRONG AND SECURE.</p>
+        <p id="strength-score">STRENGTH SCORE =</p>
+        <p><a href="{{ url_for('index') }}">TEST A DIFFERENT PASSWORD</a></p>
+    </div>
+
+    <script>
+        // Function to get URL query parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Get the totalScore from the URL query parameters
+        var totalScore = getUrlParameter('totalScore');
+
+        // Update the strength score text with the totalScore value
+        document.getElementById('strength-score').textContent += ' ' + totalScore +'%';
+    </script>
+
+    <style>
+        .message-container {
+            color: white;
+            font-family: cursive;
+            font-weight: bolder;
+            color: #c4fea7;
+        }
+
+        #strength-score{
+            font-size: 25px;
+            font-weight: bolder;
+        }
+
+        a{
+            color: rgb(242, 30, 30);
+            font-family: 'open sans';
+            font-size: 20px;
+            text-decoration: underline;
+        }
+        
+    </style>
+
+</body>
+
+</html>
