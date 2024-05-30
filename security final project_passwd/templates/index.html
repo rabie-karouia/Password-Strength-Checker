@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta charset="UTF-8">
+    <title>Password Strength Checker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- Your existing content -->
+    <div class="video-background">
+        <video playsinline autoplay muted loop>
+            <source src="{{ url_for('static', filename='videos/video.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div class="container">
+        <h2>Password Strength Checker</h2>
+        <div class="inputArea">
+            <input type="password" placeholder="Password" id="YourPassword">
+            <span class="password-icon" id="passwordTipsIcon" title="Password Tips">
+            <i class="fa-regular fa-lightbulb fa-lg" style="color: #FFD43B;"></i>
+            </span>
+            <span class="generate-password-icon" id="generatePasswordIcon" title="Generate Password">
+            <img src="{{ url_for('static', filename='Images/password_generator.png') }}" alt="Password Generator">
+            </span>
+            <span><i id="toggler" class="far fa-eye"></i></span>
+            <form id="passwordForm">
+                <button type="submit">CHECK STRENGTH</button>
+            </form>
+        </div>
+        <div class="strengthMeter"></div>
+        <p id="length" class="invalid"><img id="lengthImage"
+                src="{{ url_for('static', filename='images/cross.png') }}" alt="Image Description"
+                style="vertical-align: middle; margin-right: 5px;">At least 12 characters long</p>
+        <p id="uppercase" class="invalid"><img id="uppercaseImage"
+                src="{{ url_for('static', filename='images/cross.png') }}" alt="Image Description"
+                style="vertical-align: middle; margin-right: 5px;">At least 1 uppercase letter (A-Z)</p>
+        <p id="lowercase" class="invalid"><img id="lowercaseImage"
+                src="{{ url_for('static', filename='images/cross.png') }}" alt="Image Description"
+                style="vertical-align: middle; margin-right: 5px;">At least 1 lowercase letter (a-z)</p>
+        <p id="number" class="invalid"><img id="numberImage"
+                src="{{ url_for('static', filename='images/cross.png') }}" alt="Image Description"
+                style="vertical-align: middle; margin-right: 5px;">At least 1 number (0-9)</p>
+        <p id="special" class="invalid"><img id="specialImage"
+                src="{{ url_for('static', filename='images/cross.png') }}" alt="Image Description"
+                style="vertical-align: middle; margin-right: 5px;">At least 1 special character</p>
+
+    </div>
+
+    <p id="timeToCrack" style="color: white; font-weight: bold; margin-top: 20px;"> <span id="crackResult"></span></p>
+
+    <!-- Contact us icons -->
+    <div class="contact-icons">
+        <a href="https://www.facebook.com/rana.benfraj.12/" target="_blank" title="Contact Us & Feedback"><i
+            class="fab fa-facebook-f" style="color: #1877F2;"></i></a>
+    <a href="mailto:benfraj.rana@gmail.com" title="Contact Us & Feedback"><i class="far fa-envelope" style="color:#c71610"></i></a>
+    <a href="{{ url_for('static', filename='info.html') }}" target="_blank" title="The Importance of Strong Passwords"><i
+        class="fas fa-question-circle" style="color: white;"></i></a>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+        
+    <script>
+        function Strength(password) {
+            let i = 0;
+
+            if (password.length >= 12) {
+                i++;
+            }
+
+            if (password.length > 16) {
+                i++;
+            }
+
+            if (/[A-Z]/.test(password)) {
+                i++;
+            }
+
+            if (/[0-9]/.test(password)) {
+                i++;
+            }
+
+            if (/[A-Za-z0-9]/.test(password)) {
+                i++;
+            }
+
+            return i;
+        }
+
+        function checkPasswordStrength() {
+            let password = document.getElementById("YourPassword").value;
+
+            // Check length
+            if (password.length >= 12) {
+                document.getElementById("length").classList.remove("invalid");
+                document.getElementById("length").classList.add("valid");
+                document.getElementById("lengthImage").src = "{{ url_for('static', filename='images/accept.png') }}";
+
+            } else {
+                document.getElementById("length").classList.remove("valid");
+                document.getElementById("length").classList.add("invalid");
+                document.getElementById("lengthImage").src = "{{ url_for('static', filename='images/cross.png') }}";
+            }
+
+            // Check uppercase
+            if (/[A-Z]/.test(password)) {
+                document.getElementById("uppercase").classList.remove("invalid");
+                document.getElementById("uppercase").classList.add("valid");
+                document.getElementById("uppercaseImage").src = "{{ url_for('static', filename='images/accept.png') }}"; // Change image source to img2
+
+            } else {
+                document.getElementById("uppercase").classList.remove("valid");
+                document.getElementById("uppercase").classList.add("invalid");
+                document.getElementById("uppercaseImage").src = "{{ url_for('static', filename='images/cross.png') }}"; // Change image source back to img1
+            }
+
+            // Check lowercase
+            if (/[a-z]/.test(password)) {
+                document.getElementById("lowercase").classList.remove("invalid");
+                document.getElementById("lowercase").classList.add("valid");
+                document.getElementById("lowercaseImage").src = "{{ url_for('static', filename='images/accept.png') }}";
+
+            } else {
+                document.getElementById("lowercase").classList.remove("valid");
+                document.getElementById("lowercase").classList.add("invalid");
+                document.getElementById("lowercaseImage").src = "{{ url_for('static', filename='images/cross.png') }}";
+            }
+
+
+            // Check number
+            if (/\d/.test(password)) {
+                document.getElementById("number").classList.remove("invalid");
+                document.getElementById("number").classList.add("valid");
+                document.getElementById("numberImage").src = "{{ url_for('static', filename='images/accept.png') }}";
+
+            } else {
+                document.getElementById("number").classList.remove("valid");
+                document.getElementById("number").classList.add("invalid");
+                document.getElementById("numberImage").src = "{{ url_for('static', filename='images/cross.png') }}";
+            }
+
+            // Check for special characters
+            if (/[^@\w\s]/.test(password)) {
+                document.getElementById("special").classList.remove("invalid");
+                document.getElementById("special").classList.add("valid");
+                document.getElementById("specialImage").src = "{{ url_for('static', filename='images/accept.png') }}";
+            } else {
+                document.getElementById("special").classList.remove("valid");
+                document.getElementById("special").classList.add("invalid");
+                document.getElementById("specialImage").src = "{{ url_for('static', filename='images/cross.png') }}";
+            }
+
+            // Update time to crack after checking password strength
+            UpdateTimeToCrack();
+        }
+
+        document.getElementById("YourPassword").addEventListener("input", checkPasswordStrength);
+
+        document.addEventListener("DOMContentLoaded", function () {
+            let validatorText = document.getElementById("YourPassword");
+            let passwordConditions = document.querySelectorAll(".password-condition");
+
+            validatorText.addEventListener("input", function () {
+                let conditionsMet = [
+                    /[a-z]+/.test(validatorText.value),
+                    /[A-Z]+/.test(validatorText.value),
+                    /[0-9]+/.test(validatorText.value),
+                    /[\W_]/.test(validatorText.value),
+                    validatorText.value.length >= 12
+                ];
+
+                passwordConditions.forEach((item, index) => {
+                    if (conditionsMet[index]) {
+                        item.style.color = 'green';
+                    } else {
+                        item.style.color = 'initial';
+                    }
+                });
+            });
+
+            // Attach event listener to the form submission
+            document.getElementById('passwordForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Retrieve the password from the input field
+                let password = document.getElementById('YourPassword').value;
+
+                let conditionsMet = [
+                    /[a-z]+/.test(password),
+                    /[A-Z]+/.test(password),
+                    /[0-9]+/.test(password),
+                    /[$-/:-?{-~!"^_`\[\]]+/.test(password),
+                    password.length >= 12
+                ];
+
+                if (!conditionsMet.every(condition => condition)) {
+                    alert("YOUR PASSWORD MUST MEET ALL REQUIREMENTS TO ENSURE ITS SECURITY.");
+                } else {
+                    // Send the password to the server for validation
+                    fetch('/password-strength-checker', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                password: password
+                            }),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Display message if received from server
+                            if (data.message) {
+                                alert(data.message); // Display message received from server
+                            } else {
+                                let lengthScore = password.length >= 16 ? 20 : (password.length >= 12 ? 10 : 0);
+                                let uppercaseScore = /[A-Z]/.test(password) ? 15 : 0;
+                                let lowercaseScore = /[a-z]/.test(password) ? 15 : 0;
+                                let specialCharScore = /[^\w\s]/.test(password) ? 30 : 0;
+                                let numberScore = /\d/.test(password) ? 20 : 0;
+                                let totalScore = lengthScore + uppercaseScore + lowercaseScore + specialCharScore + numberScore;
+
+                                window.location.href="/message?totalScore=" + totalScore;
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            });
+        });
+
+// Event listener to submit the password form
+document.getElementById('passwordForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Retrieve the password from the input field
+    let password = document.getElementById('YourPassword').value;
+
+    // Send the password data to the server for validation
+    fetch('/add_password', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'password': password,
+            'strength': 'strong' // Set the strength to 'strong' for simplicity
+        })
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log('Password added successfully');
+                // Optionally, perform any actions after successful password addition
+            } else {
+                console.error('Failed to add password');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});
+
+        function EstimateTimeToCrack(password) {
+            // Example logic to estimate time (you can replace this with your own algorithm)
+            let complexity = 10; // Assume a basic complexity level for demonstration
+            let length = password.length;
+            let secondsToCrack = Math.pow(complexity, length);
+            return secondsToCrack;
+        }
+
+        function formatTime(milliseconds) {
+            const seconds = Math.floor(milliseconds / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            const months = Math.floor(days / 30); // Approximation, can be adjusted
+            const years = Math.floor(days / 365); // Approximation, can be adjusted
+            const centuries = Math.floor(years / 100);
+
+            if (centuries > 0) {
+                return 'centuries';
+            } else if (years > 0) {
+                return years + (years === 1 ? ' year' : ' years');
+            } else if (months > 0) {
+                return months + (months === 1 ? ' month' : ' months');
+            } else if (days > 0) {
+                return days + (days === 1 ? ' day' : ' days');
+            } else if (hours > 0) {
+                return hours + (hours === 1 ? ' hour' : ' hours');
+            } else if (minutes > 0) {
+                return minutes + (minutes === 1 ? ' minute' : ' minutes');
+            } else {
+                return seconds + (seconds === 1 ? ' second' : ' seconds');
+            }
+        }
+
+        // Function to update the estimated time on the page
+        function UpdateTimeToCrack() {
+            let password = document.getElementById('YourPassword').value;
+            let secondsToCrack = EstimateTimeToCrack(password);
+
+            // Convert seconds to a more readable format (e.g., hours, minutes, seconds)
+            let timeString = formatTime(secondsToCrack);
+
+            document.getElementById('crackResult').textContent = `ESTIMATED TIME TO CRACK: ${timeString}`;
+
+            
+        }
+
+        function generatePassword(length) {
+    const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
+    const numberChars = '0123456789';
+    const specialChars = '!@#$%^&*()-_=+';
+
+    // Ensure that at least one special character is included in the password
+    const randomSpecialChar = specialChars[Math.floor(Math.random() * specialChars.length)];
+
+    const remainingLength = length - 1; // Subtract one for the special character
+    const allChars = uppercaseChars + lowercaseChars + numberChars + specialChars;
+
+    let password = '';
+    for (let i = 0; i < remainingLength; i++) {
+        const randomIndex = Math.floor(Math.random() * allChars.length);
+        password += allChars[randomIndex];
+    }
+
+    // Insert the random special character at a random position in the password
+    const randomIndexToInsert = Math.floor(Math.random() * (length - 1));
+    password = password.slice(0, randomIndexToInsert) + randomSpecialChar + password.slice(randomIndexToInsert);
+
+    return password;
+}
+
+
+function isStrong(password) {
+    // Define your strength criteria here
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecial = /[!@#$%^&*()-_=+]/.test(password);
+    const isLengthy = password.length >= 12;
+
+    return hasUppercase && hasLowercase && hasNumber && hasSpecial && isLengthy;
+}
+
+function generateStrongPassword() {
+    let password = generatePassword(17); // You can specify the length you want
+    while (!isStrong(password)) {
+        password = generatePassword(17);
+    }
+    return password;
+}
+
+function updateStrengthMeter(password) {
+    let strength = Strength(password);
+    let container = document.querySelector(".container");
+    if (strength <= 2) {
+        container.classList.add("weak");
+        container.classList.remove("moderate", "strong");
+    } else if (strength >= 2 && strength <= 4) {
+        container.classList.remove("weak", "strong");
+        container.classList.add("moderate");
+    } else {
+        container.classList.remove("weak", "moderate");
+        container.classList.add("strong");
+    }
+}
+
+function fillGeneratedPassword() {
+    const passwordInput = document.getElementById('YourPassword');
+    const generatedPassword = generateStrongPassword(17); // Specify the desired length
+    passwordInput.value = generatedPassword;
+
+    // Check the strength of the generated password and update visual indicators
+    updateStrengthMeter(generatedPassword);
+
+    // Update the estimated time to crack
+    UpdateTimeToCrack();
+
+    checkPasswordStrength();
+}
+
+
+
+
+        document.getElementById('generatePasswordIcon').addEventListener('click', fillGeneratedPassword);
+
+    </script>
+
+<div class="footer">
+    <p style="text-align: center; font-size:small; "> Your password is securely stored in our databases. Even if we had access to this information, we would not have any knowledge of your identity.</p>
+</div>
+
+
+</body>
+
+</html>
